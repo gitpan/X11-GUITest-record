@@ -12,7 +12,7 @@ B<X11::GUITest::record> - Perl implementation of the X11 record extension.
  requests (from X-client). Futher it is possible to capture mostly all client/server
  communitation (partially implemented)
  
- For a full description of the extension see the Record Extension Protocol Speciﬁcation
+ For a full description of the extension see the Record Extension Protocol Specification
  of the X Consortium Standard (Version 11, Release 6.4)
 
 =head1 FEATURES
@@ -259,7 +259,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 bootstrap X11::GUITest::record $VERSION;
 
