@@ -455,7 +455,7 @@ CODE:
     ret = XRecordQueryVersion(dpy,&maj,&min);
     if (ret == 0)
         {
-        croak ("QueryVersion failed\nRecord extension is not enabled on X-Server\n");
+        if (DEBUG == 1) {printf ("QueryVersion failed\nRecord extension is not enabled on X-Server\n");}
         RETVAL = NULL;
         return;
         }

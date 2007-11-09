@@ -1,12 +1,22 @@
 #!/usr/bin/perl
 use X11::GUITest::record qw/:ALL :CONST/;
 
+my $ver;
+
+END { 
+        print "1..0 # Skip Record extension is not enabled\n" unless $ver;
+        exit 0;
+      }
+
+my $VERSION_REC = QueryVersion;
+exit 0 unless ($VERSION_REC) ;
+$ver = 1;
+
 print "5. --> Please move your mouse for next 3 seconds\n";
 
-SetRecordContext(MotionNotify);
+my $res = SetRecordContext(MotionNotify);
 #SetDeliveredEvents(2,3);
-EnableRecordContext;
-
+$res = EnableRecordContext;
 
 sleep(3);
 DisableRecordContext();

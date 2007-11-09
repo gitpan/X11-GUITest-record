@@ -5,20 +5,29 @@
 
 # change 'tests => 1' to 'tests => last_test_to_print';
 
-BEGIN {$| = 1; print "1..4\n"; };
+my $ver = 0; 
+BEGIN {$| = 1;  };
 
-END { print "not ok 1\n" unless $use;}
-
+END { print "not ok 1\n" unless $use;
+      unless ($ver)
+        {
+        print "1..0 # Skip Record extension is not enabled" unless $ver;
+        }
+      }
 
 use X11::GUITest::record qw/:ALL :CONST/;
 $use = 1;
-print "ok 1\n";
 
 
 # QueryVersion
-my $VERSION_REC =&QueryVersion;
+my $VERSION_REC = QueryVersion;
+
+exit 0 unless ($VERSION_REC);
+$ver = 1;
+
+print "1..4\n";
+print "ok 1\n";
 print "ok 2 - QueryVersion of record extension\n" if ($VERSION_REC);
-print "not ok 2 - QueryVersion of record extension\n" unless ($VERSION_REC);
 
 
 my @ret = MotionNotify;

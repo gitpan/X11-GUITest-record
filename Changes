@@ -18,7 +18,7 @@ Revision history for Perl extension X11::GUITest::record.
 
 0.08 [MKO] - Oct 25 2007 - Add ranges now stable
 
-0.09 [MKO] - Oct 28 2007 - Documentation..
+0.09 [MKO] - Oct 28 2007 - Documentation
 
 0.09b[MKO] - Oct 29 2007 - Adding constant resulting type and category
 
@@ -26,3 +26,7 @@ Revision history for Perl extension X11::GUITest::record.
 
 # Final release
 0.11 [MKO] - Nov 02 2007 - Fixed problems with X_PolyText8 
+
+0.12
+0.13 [MKO] - Nov 09 2007 - Some changes for cpan 
+			 - Testscripts should now work correctly

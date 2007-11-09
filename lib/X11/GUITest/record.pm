@@ -4,7 +4,7 @@ B<X11::GUITest::record> - Perl implementation of the X11 record extension.
 
 =head1 VERSION
 
-0.11
+0.13
 
 =head1 DESCRIPTION
 
@@ -259,7 +259,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 bootstrap X11::GUITest::record $VERSION;
 

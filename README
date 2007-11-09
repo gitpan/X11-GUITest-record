@@ -1,5 +1,5 @@
-X11-GUITest-record version 0.12
-2==============================
+X11-GUITest-record version 0.13
+===============================
 
 INSTALLATION
 
@@ -21,6 +21,9 @@ To use this module please activate the record extension in the config of the X-S
 
   - under selection "Module"
      Load           "record"
+
+If you want to test this module please activate the record extension first and then try "make test". Otherwise
+the test will be disabled.
 
   
 COPYRIGHT AND LICENCE
