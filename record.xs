@@ -2,7 +2,7 @@
  *   X11::GUITest::record                                                  *
  *                                                                         *
  *   Copyright (C) 2007 by Marc Koderer / ecos GmbH                        *
- *   koderer@ecos.de                                                       *
+ *   mkoderer@cpan.org                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -136,10 +136,11 @@ void dispatch (XPointer xd,XRecordInterceptData *data )
         if (DEBUG == 1){printf ("DBG: XRecordFromClient (Request) data_type: %i request_type %s length %li\n", data_type,print_request(data_type),data->data_len);}
     
     
-        if (data_type == X_CreateWindow) 
+        if (data_type == X_CreateWindow || data_type == X_DestroyWindow) 
             {
             PerlCallback(data->category,
                          data_type,
+			 data->server_time,
                          ((xCreateWindowReq*) data->data)->x,
                          ((xCreateWindowReq*) data->data)->y,
                          ((xCreateWindowReq*) data->data)->wid,0);
@@ -166,6 +167,7 @@ void dispatch (XPointer xd,XRecordInterceptData *data )
             /*PolyText8 overhead is 18 Bytes */
             PerlCallbackText(data->category,
                             data_type,
+			    data->server_time,
                             ((xPolyTextReq*) data->data)->x,
                             ((xPolyTextReq*) data->data)->y,
                             (char *)&text_cpy[18]);
@@ -174,7 +176,7 @@ void dispatch (XPointer xd,XRecordInterceptData *data )
         else 
             {
             PerlCallback(data->category,
-                         data_type,0,0,0,0);
+                         data_type,data->server_time,0,0,0,0);
             }
                             
       break;
@@ -184,6 +186,7 @@ void dispatch (XPointer xd,XRecordInterceptData *data )
             {
             PerlCallback(data->category,
                          data_type,
+			 data->server_time,
                          xrec_data->event.u.keyButtonPointer.rootX, 
                          xrec_data->event.u.keyButtonPointer.rootY,
                          xrec_data->event.u.keyButtonPointer.child,
@@ -197,6 +200,7 @@ void dispatch (XPointer xd,XRecordInterceptData *data )
         {
         PerlCallbackKey(data->category,
                         data_type,
+			data->server_time,
                         0,
                         0,
                         xrec_data->event.u.u.detail);
@@ -206,7 +210,7 @@ void dispatch (XPointer xd,XRecordInterceptData *data )
       else 
          {
          PerlCallback(data->category,
-                      data_type,0,0,0,0);
+                      data_type,data->server_time,0,0,0,0);
          }
     break;
     case XRecordClientStarted:
@@ -241,7 +245,7 @@ PerlCallback
     
 */
 
-void PerlCallback (int cat, int type, int x, int y, long WinID, long PWinID)
+void PerlCallback (int cat, int type, unsigned int time ,int x, int y, long WinID, long PWinID)
     {
     dSP ;
     reply_counter++;
@@ -253,14 +257,15 @@ void PerlCallback (int cat, int type, int x, int y, long WinID, long PWinID)
     
     XPUSHs(sv_2mortal(newSViv(cat)));
     XPUSHs(sv_2mortal(newSViv(type)));
+    mXPUSHu(time);
     XPUSHs(sv_2mortal(newSViv(x)));
     XPUSHs(sv_2mortal(newSViv(y)));
     XPUSHs(sv_2mortal(newSViv(WinID)));
     XPUSHs(sv_2mortal(newSViv(PWinID)));
     PUTBACK ;
     
-    if (DEBUG == 1){printf ("DBG: Call of PerlCallback Category: %d, Type: %d, X %d, Y %d, WinID %ld, PWinID %ld\n",
-                            cat, type, x, y, WinID, PWinID);}
+    if (DEBUG == 1){printf ("DBG: Call of PerlCallback Category: %d, Type %d, Time %u: X %d, Y %d, WinID %ld, PWinID %ld\n",
+                            cat, type, time, x, y, WinID, PWinID);}
     
     call_pv("X11::GUITest::record::Callback", G_DISCARD);
 
@@ -278,7 +283,7 @@ PerlCallbackText
 */
 
 
-void PerlCallbackText (int cat, int type, int x, int y, char* data)
+void PerlCallbackText (int cat, int type, unsigned int time ,int x, int y, char* data)
     {
     dSP ;
     reply_counter++;
@@ -290,13 +295,14 @@ void PerlCallbackText (int cat, int type, int x, int y, char* data)
     
     XPUSHs(sv_2mortal(newSViv(cat)));
     XPUSHs(sv_2mortal(newSViv(type)));
+    mXPUSHu(time);
     XPUSHs(sv_2mortal(newSViv(x)));
     XPUSHs(sv_2mortal(newSViv(y)));
     XPUSHs(sv_2mortal(newSVpv(data, 0)));
     PUTBACK ;
     
-    if (DEBUG == 1){printf ("DBG: Call of PerlCallbackText Category: %d, Type: %d,  X %d, Y %d, Data %s\n",
-                            cat, type, x, y, data);}
+    if (DEBUG == 1){printf ("DBG: Call of PerlCallbackText Category: %d, Type %d, Time %u:  X %d, Y %d, Data %s\n",
+                            cat, type, time, x, y, data);}
     
     call_pv("X11::GUITest::record::Callback", G_DISCARD);
 
@@ -312,7 +318,7 @@ PerlCallbackText
     
 */
 
-void PerlCallbackKey (int cat, int type, int x, int y, long key)
+void PerlCallbackKey (int cat, int type, unsigned int time, int x, int y, long key)
     {
     dSP ;
     reply_counter++;
@@ -324,13 +330,14 @@ void PerlCallbackKey (int cat, int type, int x, int y, long key)
     
     XPUSHs(sv_2mortal(newSViv(cat)));
     XPUSHs(sv_2mortal(newSViv(type)));
+    mXPUSHu(time);
     XPUSHs(sv_2mortal(newSViv(x)));
     XPUSHs(sv_2mortal(newSViv(y)));
     XPUSHs(sv_2mortal(newSViv(key)));
     PUTBACK ;
     
-    if (DEBUG == 1){printf ("DBG: Call of PerlCallbackKey Category: %d, Type: %d, X %d, Y %d, Key %ld\n",
-                            cat, type, x, y, key);}
+    if (DEBUG == 1){printf ("DBG: Call of PerlCallbackKey Category: %d, Type %d, Time %u: X %d, Y %d, Key %ld\n",
+                            cat, type, time, x, y, key);}
     
     call_pv("X11::GUITest::record::Callback", G_DISCARD);
 
@@ -451,7 +458,7 @@ QueryVersion()
 CODE: 
     int maj,min,ret;
     
-    char version[33];
+    char version[23];
     ret = XRecordQueryVersion(dpy,&maj,&min);
     if (ret == 0)
         {

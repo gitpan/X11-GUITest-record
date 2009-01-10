@@ -1,4 +1,4 @@
-X11-GUITest-record version 0.13
+X11-GUITest-record version 0.14
 ===============================
 
 INSTALLATION
@@ -29,6 +29,7 @@ the test will be disabled.
 COPYRIGHT AND LICENCE
 
 Copyright (C) 2007 by Marc Koderer/ecos GmbH
+Copyright (C) 2009 by Marc Koderer
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License.

@@ -30,3 +30,9 @@ Revision history for Perl extension X11::GUITest::record.
 0.12
 0.13 [MKO] - Nov 09 2007 - Some changes for cpan 
 			 - Testscripts should now work correctly
+
+0.14 [MKO] - Jan 09 2009 - Fixed problems with tests and unset 
+		 	   display var
+			 - Server timestamp value added
+			 - X_DestroyWindow request is handled like 
+			   X_CreateWindow

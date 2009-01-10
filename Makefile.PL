@@ -10,8 +10,8 @@ WriteMakefile(
     PREREQ_PM         => {}, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT       => 'Perl implementation of the X11 record extension', # retrieve abstract from module
-       AUTHOR         => 'Marc Koderer <koderer@ecos.de> / ecos GmbH, Gerald Richter <richter@ecos.de> / ecos GmbH') : ()),
-    LIBS              => ['-L/usr/X11R6/lib -lX11 -lXtst'], # e.g., '-lXtst'
+       AUTHOR         => 'Marc Koderer <mkoderer@cpan.org>, Gerald Richter/ecos GmbH') : ()),
+    LIBS              => ['-L/usr/X11R6/lib -lX11 -lXtst'], 
     DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
     INC               => '-I.', # e.g., '-I. -I/usr/include/other'
 	# Un-comment this if you add C files to link with later:

@@ -4,16 +4,18 @@ B<X11::GUITest::record> - Perl implementation of the X11 record extension.
 
 =head1 VERSION
 
-0.13
+0.14
 
 =head1 DESCRIPTION
 
- This Perl package uses the X11 record extension to capture events (from X-server) and  
- requests (from X-client). Futher it is possible to capture mostly all client/server
+ This Perl package uses the X11 record extension to capture events 
+ (from X-server) and  requests (from X-client). Futher it is 
+ possible to capture mostly all client/server
  communitation (partially implemented)
  
- For a full description of the extension see the Record Extension Protocol Specification
- of the X Consortium Standard (Version 11, Release 6.4)
+ For a full description of the extension see the 
+ Record Extension Protocol Specification of the 
+ X Consortium Standard (Version 11, Release 6.4)
 
 =head1 FEATURES
 
@@ -46,14 +48,24 @@ B<X11::GUITest::record> - Perl implementation of the X11 record extension.
   while ($data = GetRecordInfo())
     {
      print "Record: ". $data ->{TxtType} ." ";
-     print "X:". $data ->{X} . " Y:". $data ->{Y} if  ($data ->{TxtType} eq "MotionNotify");
-     print "Key:". $data ->{Key} if  ($data ->{TxtType} eq "KeyPress");
+     print "X:". $data ->{X} . " Y:". $data ->{Y} 
+     		if  ($data ->{TxtType} eq "MotionNotify");
+
+     print "Key:". $data ->{Key} 
+     		if  ($data ->{TxtType} eq "KeyPress");
      print "\n";
 
     }
 
+=head1 DEPENDENCIES
 
+To use this module please activate the record extension in the 
+config of the X-Server:
 
+  - under selection "Module"
+       Load         "record"
+
+Please make sure that the display variable is set.
 =cut
 package X11::GUITest::record;
 
@@ -259,7 +271,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 bootstrap X11::GUITest::record $VERSION;
 
@@ -277,21 +289,16 @@ my $DEBUG=0;
 
 my @Records = ();
 
-
-
 =head1 FUNCTIONS
 
 Parameters enclosed within [] are optional.
 
 =cut
 
-
 # Category Constants
 sub Event()                     { 0;}
 sub Request()                   { 1;}
-
 # Returns (Category, Type)
-
 
 # Event Constants
 
@@ -328,7 +335,6 @@ sub SelectionNotify()           { (0,31);}
 sub ColormapNotify()            { (0,32);}
 sub ClientMessage()             { (0,33);}
 sub MappingNotify()             { (0,34);}
-
 
 # Request Constants
 
@@ -494,9 +500,11 @@ sub CompConstant
     return 0;
     }
 
+
+
 sub Callback
     {
-    my ($cat, $type, $x, $y, @args ) = @_;
+    my ($cat, $type, $time, $x, $y, @args ) = @_;
     
     #Text
     
@@ -506,6 +514,7 @@ sub Callback
     
      push (@Records,{"Category" => $cat,
                      "Type"     => $type,
+		     "Time"	=> $time,
                      "TxtType"  => ConvType2Text($cat, $type),
                      "X"        => $x,
                      "Y"        => $y,
@@ -518,6 +527,7 @@ sub Callback
         my $Key  = shift @args;
         push (@Records,{"Category" => $cat,
                         "Type"     => $type,
+			"Time"     => $time,
                         "TxtType"  => ConvType2Text($cat, $type),
                         "X"        => $x,
                         "Y"	   => $y,
@@ -531,6 +541,7 @@ sub Callback
      my $PWin = shift @args;
      push (@Records,{"Category" => $cat,
                      "Type"     => $type,
+		     "Time"	=> $time,
                      "TxtType"  => ConvType2Text($cat, $type),
                      "X"        => $x,
                      "Y"        => $y,
@@ -545,7 +556,7 @@ sub Callback
 sub SetRecordDEBUG
     {
     my $level = shift;
-    $level = 1 unless ($level);
+    $level = 1 unless (defined ($level));
     $DEBUG = $level;
     CSetDEBUG($level);
     }
@@ -570,6 +581,7 @@ Some implemented events/requests are:
     - ButtonRelease
     - MotionNotify
     - X_CreateWindow
+    - X_DestroyWindow
     - X_PolyText8
 
 =back
@@ -614,8 +626,9 @@ Otherwise it will return a hash with the following values:
     - {"Category"}:     Category of the record (0 for event
                                                 1 for request)
                                              
-    - {"Type"}:         Type of the record in digits
-    - {"TxtType"}:      Type of the record in text
+    - {"Type"}          Type of the record in digits
+    - {"TxtType"  }     Type of the record in text
+    - {"Time"}          Server timestamp
    [- {"X"}             X coordinte]
    [- {"Y"}             Y coordinte]
    [- {"Text"}          Text if it is a X_Polytext8]
@@ -694,4 +707,3 @@ sub DisableRecordContext
 
 
 1;
-

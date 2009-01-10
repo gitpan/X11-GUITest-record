@@ -1,12 +1,20 @@
 #!/usr/bin/perl
-use X11::GUITest::record qw/:ALL :CONST/;
 
 my $ver;
+BEGIN {
+      unless (length $ENV{'DISPLAY'}) 
+         {
+         warn "Not able to open display\n";
+         exit 0;
+         } 
+      }
 
 END { 
-        print "1..0 # Skip Record extension is not enabled\n" unless $ver;
-        exit 0;
-      }
+    print "1..0 # Skip Record extension is not enabled\n" unless $ver;
+    exit 0;
+    }
+
+use X11::GUITest::record qw/:ALL :CONST/;
 
 my $VERSION_REC = QueryVersion;
 exit 0 unless ($VERSION_REC) ;
@@ -20,9 +28,14 @@ $res = EnableRecordContext;
 
 sleep(3);
 DisableRecordContext();
-print "ok 5 - Some movements\n" if (GetRecordInfo);
-print "not ok 5 - No mouse movements \n" unless (GetRecordInfo);
-
+if (GetRecordInfo)
+	{
+	print "ok 5 - Some movements\n";
+	}
+else
+	{
+	print "not ok 5 - No mouse movements \n";
+	}
 
 print "6. --> Please press some keys for next 3 seconds\n";
 
@@ -31,6 +44,13 @@ SetRecordContext(KeyRelease, KeyPress);
 EnableRecordContext;
 sleep(3);
 DisableRecordContext();
-print "ok 6\n" if (GetRecordInfo);
-print "not ok 6\n" unless (GetRecordInfo);
+
+if (GetRecordInfo)
+	{
+	print "ok 6\n";
+	}
+else
+	{
+	print "not ok 6\n";
+	}
 

@@ -64,9 +64,9 @@ typedef union {
 
 
 /*Perl dispatch function */
-void PerlCallback (int cat, int type, int x, int y, long WinID, long PWinID);
-void PerlCallbackText (int cat, int type, int x, int y, char* data);
-void PerlCallbackKey (int cat, int type, int x, int y, long key);
+void PerlCallback (int cat, int type, unsigned int time, int x, int y, long WinID, long PWinID);
+void PerlCallbackText (int cat, int type, unsigned int time, int x, int y, char* data);
+void PerlCallbackKey (int cat, int type, unsigned int time, int x, int y, long key);
 
 /*Main dispatch function*/
 void dispatch (XPointer xd,XRecordInterceptData *data);

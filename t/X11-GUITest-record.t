@@ -6,7 +6,14 @@
 # change 'tests => 1' to 'tests => last_test_to_print';
 
 my $ver = 0; 
-BEGIN {$| = 1;  };
+BEGIN {
+      unless (length $ENV{'DISPLAY'})
+         {
+         warn "Not able to open display\n";
+         exit 0;
+         }
+	$| = 1;  
+	};
 
 END { print "not ok 1\n" unless $use;
       unless ($ver)
@@ -16,6 +23,7 @@ END { print "not ok 1\n" unless $use;
       }
 
 use X11::GUITest::record qw/:ALL :CONST/;
+
 $use = 1;
 
 
