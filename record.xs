@@ -798,7 +798,7 @@ L<X11::GUITest> - For replaying the records
 
 =head1 AUTHOR
 
-Marc Koderer   E<lt>koderer@ecos.deE<gt>,
+Marc Koderer   E<lt>mkoderer@cpan.orgE<gt>,
 Gerald Richter E<lt>richter@ecos.deE<gt> / ecos GmbH
 
 =head1 COPYRIGHT AND LICENSE

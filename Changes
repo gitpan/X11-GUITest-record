@@ -36,3 +36,5 @@ Revision history for Perl extension X11::GUITest::record.
 			 - Server timestamp value added
 			 - X_DestroyWindow request is handled like 
 			   X_CreateWindow
+
+0.15 [MKO] - Mar 09 2009 - 

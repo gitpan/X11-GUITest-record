@@ -2,7 +2,7 @@
  *   X11::GUITest::record                                                  *
  *                                                                         *
  *   Copyright (C) 2007 by Marc Koderer / ecos GmbH                        *
- *   koderer@ecos.de                                                       *
+ *   mkoderer@cpan.org                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *

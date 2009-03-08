@@ -4,18 +4,18 @@ B<X11::GUITest::record> - Perl implementation of the X11 record extension.
 
 =head1 VERSION
 
-0.14
+0.15
 
 =head1 DESCRIPTION
 
- This Perl package uses the X11 record extension to capture events 
- (from X-server) and  requests (from X-client). Futher it is 
- possible to capture mostly all client/server
- communitation (partially implemented)
- 
- For a full description of the extension see the 
- Record Extension Protocol Specification of the 
- X Consortium Standard (Version 11, Release 6.4)
+This Perl package uses the X11 record extension to capture events 
+(from X-server) and  requests (from X-client). Futher it is 
+possible to capture mostly all client/server
+communitation (partially implemented)
+
+For a full description of the extension see the 
+Record Extension Protocol Specification of the 
+X Consortium Standard (Version 11, Release 6.4)
 
 =head1 FEATURES
 
@@ -30,7 +30,7 @@ B<X11::GUITest::record> - Perl implementation of the X11 record extension.
   
   # Query version of the record extension
   my $VERSION_EXT = QueryVersion;
-
+ 
   print "Record extension version: $VERSION_EXT\n";
   
   # Sets the record context to capture key presses and mouse movements
@@ -66,7 +66,9 @@ config of the X-Server:
        Load         "record"
 
 Please make sure that the display variable is set.
+
 =cut
+
 package X11::GUITest::record;
 
 use strict;
@@ -271,7 +273,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 bootstrap X11::GUITest::record $VERSION;
 
